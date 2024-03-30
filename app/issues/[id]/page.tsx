@@ -7,6 +7,8 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import EditButtonDetail from './EditButtonDetail'
 import IssueDetail from './IssueDetail'
+import DeleteIssueButton from './DeleteIssueButton'
+import axios from 'axios'
 
 interface Props{
     params:{
@@ -23,14 +25,19 @@ const IssueDetailPage = async ({params:{id}}:Props) => {
     notFound();
      
   return (
-    <Grid columns={{initial: "1" , md:"2"}} gap="4">
+<div>
+    
+    <Grid columns={{initial: "1" , md:"2"}} gap="4" >
+       
         <Box>
             <IssueDetail issue={issue}/>
         </Box>
     <Box>
         <EditButtonDetail issueId={issue.id}/>
+        <DeleteIssueButton issueId={issue.id}/>
     </Box>
     </Grid>
+    </div>
   )
 }
 

@@ -1,20 +1,22 @@
 "use client";
 import { Button, Callout, Text, TextField } from '@radix-ui/themes'
-import SimpleMde from 'react-simplemde-editor';
+import dynamic from 'next/dynamic';
 import "easymde/dist/easymde.min.css"
 import { Controller, useForm } from 'react-hook-form';
 import { title } from 'process';
 import  axios  from 'axios'
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { createIssueSchema } from '@/app/validationSchema';
+import { issueSchema } from '@/app/validationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
 import { Issue } from '@prisma/client';
 
-type NewIssueForm = z.infer<typeof createIssueSchema>
+const SimpleMde= dynamic(()=> import ('react-simplemde-editor'), { ssr :false})
+
+type NewIssueForm = z.infer<typeof issueSchema>
 
 const IssueForm = ({issue}:{issue?:Issue}) => {
 
@@ -24,7 +26,7 @@ const IssueForm = ({issue}:{issue?:Issue}) => {
    const router = useRouter();
 
    const{register, handleSubmit, control,formState : {errors}}= useForm<NewIssueForm>({
-    resolver: zodResolver(createIssueSchema)
+    resolver: zodResolver(issueSchema)
    });
   return (
 
@@ -34,7 +36,11 @@ const IssueForm = ({issue}:{issue?:Issue}) => {
          {
             try {
                 setSubmitting(true);
+                if(issue)
+                await axios.patch('/api/issues/' + issue.id, data)
+            else
                  await axios.post('/api/issues', data);  router.push('/issues')
+                
             } catch (error) {
                 setSubmitting(false);
                 setError("An unexpected error occured");
