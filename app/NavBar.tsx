@@ -4,7 +4,7 @@ import React from 'react'
 import { FaBug } from "react-icons/fa6";
 import{usePathname} from "next/navigation"
 import classnames from 'classnames';
-import { Box, Button, Flex } from '@radix-ui/themes';
+import { Avatar, Box, Button, DropdownMenu, Flex, Text } from '@radix-ui/themes';
 import { useSession } from 'next-auth/react';
 
 const NavBar = () => {
@@ -27,9 +27,27 @@ const NavBar = () => {
                 })}>{link.label}</Link> )}
              </ul></Flex>
                 <Box>
-                     <Box>{status === "authenticated" && <Button color='red'><Link href="/api/auth/signout">Logout</Link></Button>}
+                     {status === "authenticated" &&
+                     (<DropdownMenu.Root>
+                        <DropdownMenu.Trigger>
+                            <Avatar src={session.user!.image!} fallback="?" size="2" radius="full"/>
+                        </DropdownMenu.Trigger>
+
+                        <DropdownMenu.Content>
+                            <DropdownMenu.Label>
+                                <Text size="2">
+                                {session.user!.email}</Text>
+                            </DropdownMenu.Label>
+                            <DropdownMenu.Item><Link href="/api/auth/signout">Logout</Link> </DropdownMenu.Item>
+                        </DropdownMenu.Content>
+                     </DropdownMenu.Root>
+
+                     
+                        //
+                        )}
+
              {status==="unauthenticated" && <Button color='blue'><Link href="/api/auth/signin">SignIn</Link></Button>}
-             </Box>
+             
                 </Box>
             </Flex>
             
