@@ -11,6 +11,7 @@ import DeleteIssueButton from './DeleteIssueButton'
 import axios from 'axios'
 import { getServerSession } from 'next-auth'
 import authOptions from '@/app/auth/authOptions'
+import AssigneeSelect from './AssigneeSelect'
 
 interface Props{
     params:{
@@ -37,7 +38,7 @@ const IssueDetailPage = async ({params:{id}}:Props) => {
             <IssueDetail issue={issue}/>
         </Box>
     { session && <Box>
-        
+        <AssigneeSelect/>
         <EditButtonDetail issueId={issue.id}/>
         <DeleteIssueButton issueId={issue.id}/>
     </Box>}
