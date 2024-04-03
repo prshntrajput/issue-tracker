@@ -12,6 +12,7 @@ import axios from 'axios'
 import { getServerSession } from 'next-auth'
 import authOptions from '@/app/auth/authOptions'
 import AssigneeSelect from './AssigneeSelect'
+import { Metadata } from 'next'
 
 interface Props{
     params:{
@@ -37,14 +38,25 @@ const IssueDetailPage = async ({params:{id}}:Props) => {
         <Box>
             <IssueDetail issue={issue}/>
         </Box>
-    { session && <Box>
-        <AssigneeSelect issue={issue}/>
+    { session && <Box py="2">
+        <div className='xl:flex xl:gap-2 xl:flex-col flex flex-col gap-2'>
+        <AssigneeSelect issue={issue} />
+        
         <EditButtonDetail issueId={issue.id}/>
-        <DeleteIssueButton issueId={issue.id}/>
+        <div className='w-[20vh]'>
+        <DeleteIssueButton issueId={issue.id}/></div>
+        </div>
+        
     </Box>}
     </Grid>
     </div>
   )
 }
+
+export const metadata: Metadata = {
+     
+    title:"Issue Tracker- Deatail",
+    description:"Displaying detail of issues"
+};
 
 export default IssueDetailPage

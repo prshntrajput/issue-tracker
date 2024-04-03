@@ -30,7 +30,7 @@ export default function RootLayout({
         
           <NavBar/>
           <main className='p-6'>{children} </main>
-          <ThemePanel/>
+          
         </Theme>
         </AuthProvider>
         </QueryClientProvider>
